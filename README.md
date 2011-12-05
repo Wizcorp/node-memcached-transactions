@@ -1,6 +1,7 @@
 # Memcached Transactions
 
-Memcached Transactions is a wrapper around node-memcached. It provides a
+Memcached Transactions is a wrapper around
+[node-memcached](https://github.com/3rd-Eden/node-memcached). It provides a
 transactional environment for all-or-nothing writes, and smart caching of
 previously received, writted and deleted data.
 
