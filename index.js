@@ -31,9 +31,10 @@ MemcachedTransaction.prototype.get = function (key, cb) {
 
 	var op = this.queue[key];
 	if (op && op.type === 'del') {
-		// deleted
+		// this value is scheduled to be deleted, so consider it non-existing and return undefined
+
 		if (cb) {
-			cb(null, undefined);	// return undefined
+			cb(null, undefined);
 		}
 		return;
 	}
@@ -41,11 +42,15 @@ MemcachedTransaction.prototype.get = function (key, cb) {
 	var value = cache[key];
 
 	if (value !== undefined) {
+		// there is a known uptodate value for this key, so return it instantly
+
 		if (cb) {
 			cb(null, value);
 		}
 		return;
 	}
+
+	// get the value from memcached and cache it
 
 	if (this.debug) {
 		this.debug('MemcachedTransaction: getting key', key);
@@ -72,20 +77,31 @@ MemcachedTransaction.prototype.getMulti = function (keys, cb) {
 	var value, result = {};
 	var lookup = [];
 
+	// for each key, check if we really need to fetch it, or if there is a known state
+
 	for (var key in keys) {
 		var op = this.queue[key];
+
 		if (op && op.type === 'del') {
+			// this value is scheduled to be deleted, so consider it non-existing and return undefined
+
 			result[key] = undefined;
 		} else {
 			value = cache[key];
 
 			if (value === undefined) {
+				// prepare for fetching from memcached
+
 				lookup.push(key);
 			} else {
+				// there is a known uptodate value for this key, so return it instantly
+
 				result[key] = value;
 			}
 		}
 	}
+
+	// if there is nothing to look up from memcached, return all known results
 
 	if (lookup.length === 0) {
 		if (cb) {
@@ -94,13 +110,18 @@ MemcachedTransaction.prototype.getMulti = function (keys, cb) {
 		return;
 	}
 
+	// get the unknown values from memcached and cache them
+
 	if (this.debug) {
 		this.debug('MemcachedTransaction: getting keys', lookup);
 	}
 
 	this.client.getMulti(lookup, function (error, values) {
 		if (error) {
-			return cb(error);
+			if (cb) {
+				cb(error);
+			}
+			return;
 		}
 
 		for (var key in values) {
@@ -162,7 +183,9 @@ MemcachedTransaction.prototype.touch = function (key, ttl, cb) {
 MemcachedTransaction.prototype._exec = function (op, cb) {
 	if (this.options.simulate) {
 		console.info('Executing', op);
-		cb();
+		if (cb) {
+			cb();
+		}
 		return;
 	}
 
@@ -233,7 +256,7 @@ MemcachedTransaction.prototype.commit = function (cb) {
 		},
 		function (error) {
 			if (cb) {
-				cb(error)
+				cb(error);
 			}
 		}
 	);
@@ -243,5 +266,9 @@ MemcachedTransaction.prototype.commit = function (cb) {
 MemcachedTransaction.prototype.rollBack = function (cb) {
 	this.queue = {};
 	this.cache = {};
+
+	if (cb) {
+		cb();
+	}
 };
 

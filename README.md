@@ -16,7 +16,7 @@ Where options is an optional object containing:
 
 #### simulate (boolean)
 
-If true does not write anything to the memcached server, but instead
+If true does not write anything to the memcached server on commit, but instead
 outputs all scheduled operations to console. This way operation bundling and
 discarding can be inspected for correctness.
 
