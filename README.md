@@ -1,9 +1,9 @@
 # Memcached Transactions
 
 Memcached Transactions is a wrapper around
-[node-memcached](https://github.com/3rd-Eden/node-memcached). It provides a
-transactional environment for all-or-nothing writes, and smart caching of
-previously received, written and deleted data.
+[node-memcached](https://github.com/3rd-Eden/node-memcached). It provides an
+isolated transactional environment for all-or-nothing writes, and smart caching
+of previously received, written and deleted data.
 
 ## API
 
@@ -20,9 +20,11 @@ If true does not write anything to the memcached server on commit, but instead
 outputs all scheduled operations to console. This way operation bundling and
 discarding can be inspected for correctness.
 
-#### debug (boolean)
+#### debug (boolean, function)
 
-If true outputs every memcached operation to console.
+If true outputs every memcached operation to console. If `debug` is a function,
+that function will be called (with a variable number of arguments) whenever
+debug information is output.
 
 ### myTransaction.commit([cb])
 
