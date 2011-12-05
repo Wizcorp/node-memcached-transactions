@@ -3,7 +3,7 @@
 Memcached Transactions is a wrapper around
 [node-memcached](https://github.com/3rd-Eden/node-memcached). It provides a
 transactional environment for all-or-nothing writes, and smart caching of
-previously received, writted and deleted data.
+previously received, written and deleted data.
 
 ## API
 
@@ -13,10 +13,10 @@ are:
 ### new MemcachedTransaction(memcachedClient, [options])
 
 Where options is an optional object containing:
-`simulate` (boolean), which if true does not write anything to the memcached
+* `simulate` (boolean), which if true does not write anything to the memcached
 server, but instead outputs all scheduled operations to console. This way
 operation bundling and discarding can be inspected for correctness.
-`debug` (boolean), which if true outputs every memcached operation to console.
+* `debug` (boolean), which if true outputs every memcached operation to console.
 
 ### myTransaction.commit([cb])
 
