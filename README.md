@@ -13,10 +13,16 @@ are:
 ### new MemcachedTransaction(memcachedClient, [options])
 
 Where options is an optional object containing:
-* `simulate` (boolean), which if true does not write anything to the memcached
-server, but instead outputs all scheduled operations to console. This way
-operation bundling and discarding can be inspected for correctness.
-* `debug` (boolean), which if true outputs every memcached operation to console.
+
+#### simulate (boolean)
+
+If true does not write anything to the memcached server, but instead
+outputs all scheduled operations to console. This way operation bundling and
+discarding can be inspected for correctness.
+
+#### debug (boolean)
+
+If true outputs every memcached operation to console.
 
 ### myTransaction.commit([cb])
 
