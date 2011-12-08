@@ -79,7 +79,8 @@ MemcachedTransaction.prototype.getMulti = function (keys, cb) {
 
 	// for each key, check if we really need to fetch it, or if there is a known state
 
-	for (var key in keys) {
+	for (var i = 0, len = keys.length; i < len; i++) {
+		var key = keys[i];
 		var op = this.queue[key];
 
 		if (op && op.type === 'del') {

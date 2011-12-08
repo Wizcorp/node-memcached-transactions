@@ -5,6 +5,32 @@ Memcached Transactions is a wrapper around
 isolated transactional environment for all-or-nothing writes, and smart caching
 of previously received, written and deleted data.
 
+## Example
+
+``` javascript
+var Memcached = require('memcached');
+var MemcachedTransaction = require('memcached-transactions');
+
+var client = new Memcached(['localhost:11211']);
+var tr = new MemcachedTransaction(client);
+
+tr.set('foo', 5);
+tr.get('foo', function (error, value) {
+	console.log(value); // outputs 5, even though nothing has been written yet
+
+	tr.set('foo', value + 1);
+
+	// commit changes to memcached
+
+	tr.commit(function (error) {
+		tr.del('foo');
+		tr.commit();
+	});
+});
+```
+Outputs `foo 6`. Note that foo was never set to 5 in memcached. Only on commit
+do values ever get created, deleted or updated.
+
 ## API
 
 The API tries to follow node-memcached to the letter. The only differences
@@ -60,34 +86,8 @@ node-memcached currently does not yet implement a touch API, but Memcached
 Transactions does. The touch function updates the TTL of a given key. If a
 touch operation followed a set() operation, the two will be merged, and the key
 that was being set, will receive the TTL that was given by the touch command.
+Note that this function only works on Membase, not on Memcached.
 
-
-## Example
-
-``` javascript
-var Memcached = require('memcached');
-var MemcachedTransaction = require('memcached-transactions');
-
-var client = new Memcached(['localhost:11211']);
-var tr = new MemcachedTransaction(client);
-
-tr.set('foo', 5);
-tr.set('bar', 6);
-tr.get('foo', function (error, value) {
-	// value now contains 5, even though nothing has been written yet
-
-	value++;
-	tr.set('foo', value);
-
-	tr.commit(function (error) {
-		console.log('All done');
-
-		tr.del('foo');
-		tr.del('bar');
-		tr.commit();
-	});
-});
-```
 
 ## License
 
