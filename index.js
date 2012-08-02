@@ -250,7 +250,7 @@ MemcachedTransaction.prototype.commit = function (cb) {
 
 	var that = this;
 
-	async.forEach(
+	async.forEachSeries(
 		ops,
 		function (op, callback) {
 			that._exec(op, callback);
