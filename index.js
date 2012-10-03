@@ -205,7 +205,7 @@ MemcachedTransaction.prototype._exec = function (op, cb) {
 			console.error(JSON.stringify(err));
 		}
 
-		return cb();
+		return cb(err);
 	}
 
 	switch (op.type) {
