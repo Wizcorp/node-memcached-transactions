@@ -3,9 +3,6 @@
 	"description": "A transactional wrapper around 3rdEden's node-memcached library.",
 	"version": "0.1.0",
 	"author": "Ron Korving <rkorving@wizcorp.jp>",
-	"engines": {
-		"node": ">=0.4.9"
-	},
 	"main": "index",
 	"dependencies": {
 		"async": "0.1.15"
