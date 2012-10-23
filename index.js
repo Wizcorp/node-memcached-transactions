@@ -164,9 +164,15 @@ MemcachedTransaction.prototype.increment = function (key, amount, cb) {
 };
 
 
+MemcachedTransaction.prototype.inc = MemcachedTransaction.prototype.increment;
+
+
 MemcachedTransaction.prototype.decrement = function (key, amount, cb) {
 	return this.client.decrement(key, amount, cb);
 };
+
+
+MemcachedTransaction.prototype.dec = MemcachedTransaction.prototype.decrement;
 
 
 MemcachedTransaction.prototype.touch = function (key, ttl, cb) {
@@ -200,13 +206,6 @@ MemcachedTransaction.prototype._exec = function (op, cb) {
 		return;
 	}
 
-	function callback(err) {
-		if (err) {
-			console.error(JSON.stringify(err));
-		}
-
-		return cb(err);
-	}
 
 	switch (op.type) {
 	case 'set':
@@ -214,14 +213,14 @@ MemcachedTransaction.prototype._exec = function (op, cb) {
 			this.debug('MemcachedTransaction: setting key', op.key, 'to value', op.value, 'with TTL', op.ttl || 0);
 		}
 
-		this.client.set(op.key, op.value, op.ttl || 0, callback);
+		this.client.set(op.key, op.value, op.ttl || 0, cb);
 		break;
 	case 'del':
 		if (this.debug) {
 			this.debug('MemcachedTransaction: deleting key', op.key);
 		}
 
-		this.client.del(op.key, callback);
+		this.client.del(op.key, cb);
 		break;
 	case 'touch':
 		if (this.debug) {
@@ -233,13 +232,13 @@ MemcachedTransaction.prototype._exec = function (op, cb) {
 				command: ['touch', op.key, op.ttl || 0].join(' '),
 				key: op.key,
 				type: 'touch',
-				callback: callback
+				callback: cb
 			};
 		});
 		break;
 	default:
 		if (cb) {
-			callback('Unknown operation type: ' + op.type);
+			cb('Unknown operation type: ' + op.type);
 		}
 		break;
 	}
