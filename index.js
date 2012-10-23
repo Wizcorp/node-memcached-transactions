@@ -159,20 +159,14 @@ MemcachedTransaction.prototype.del = function (key, cb) {
 };
 
 
-MemcachedTransaction.prototype.increment = function (key, amount, cb) {
+MemcachedTransaction.prototype.incr = MemcachedTransaction.prototype.increment = function (key, amount, cb) {
 	return this.client.increment(key, amount, cb);
 };
 
 
-MemcachedTransaction.prototype.inc = MemcachedTransaction.prototype.increment;
-
-
-MemcachedTransaction.prototype.decrement = function (key, amount, cb) {
+MemcachedTransaction.prototype.decr = MemcachedTransaction.prototype.decrement = function (key, amount, cb) {
 	return this.client.decrement(key, amount, cb);
 };
-
-
-MemcachedTransaction.prototype.dec = MemcachedTransaction.prototype.decrement;
 
 
 MemcachedTransaction.prototype.touch = function (key, ttl, cb) {
