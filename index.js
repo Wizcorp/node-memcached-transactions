@@ -206,7 +206,6 @@ MemcachedTransaction.prototype._exec = function (op, cb) {
 		return;
 	}
 
-
 	switch (op.type) {
 	case 'set':
 		if (this.debug) {
