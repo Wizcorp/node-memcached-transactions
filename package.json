@@ -1,7 +1,7 @@
 {
 	"name": "memcached-transactions",
 	"description": "A transactional wrapper around 3rdEden's node-memcached library.",
-	"version": "0.1.0",
+	"version": "0.1.1",
 	"main": "index",
 	"author": "Ron Korving <rkorving@wizcorp.jp>",
 	"maintainers": [{
