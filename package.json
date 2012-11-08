@@ -13,7 +13,7 @@
 		"url": "https://github.com/Wizcorp/node-memcached-transactions/blob/master/License"
 	},
 	"dependencies": {
-		"async": "0.1.23"
+		"async": "0.1.22"
 	},
 	"repository": {
 		"type": "git",
