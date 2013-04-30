@@ -5,6 +5,10 @@ Memcached Transactions is a wrapper around
 isolated transactional environment for all-or-nothing writes, and smart caching
 of previously received, written and deleted data.
 
+This does not magically alter the behavior of Memcached. It simply queues up all
+your mutating operations until you are sure you want to do them at all. Only
+when you choose to "commit" will all operations be executed (one by one).
+
 ## Example
 
 ``` javascript
